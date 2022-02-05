@@ -4,6 +4,7 @@ export NG_EXEC=$([[ $NG_EXEC ]] && echo $NG_EXEC || echo 'ng');
 export CORDOVA_EXEC=$([[ $CORDOVA_EXEC ]] && echo $CORDOVA_EXEC || echo 'cordova');
 export NODEMON_EXEC=$([[ $NODEMON_EXEC ]] && echo $NODEMON_EXEC || echo 'nodemon');
 
+export CHROME_BIN=$([[ $CHROME_BIN ]] && echo $CHROME_BIN || echo $(which chromium));
 export NODEMON_ENV=$([[ $NODEMON_ENV ]] && echo $NODEMON_ENV || echo 'watch');
 export NODE_ENV=$([[ $NODE_ENV ]] && echo $NODE_ENV || echo 'development');
 export CORDOVA_PLATFORM=$([ $CORDOVA_PLATFORM ] && echo $CORDOVA_PLATFORM || echo 'browser');
@@ -90,10 +91,10 @@ nodemon_cordova_watch() {
 # Builds the app either in debug or release mode.
 build_platform() {
   # 1) Test the app
-  npm run test -- --configuration $NODE_ENV;
+  npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI;
 
   # 2) Build the app
-  $CORDOVA_EXEC build $([ $NODE_ENV == 'production' ] && '--release' || '--debug');
+  [[ $? -eq 0 ]] && $CORDOVA_EXEC build $CORDOVA_PLATFORM $([ $NODE_ENV == 'production' ] && echo '--release' || echo '--debug');
 }
 
 

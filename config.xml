@@ -13,12 +13,6 @@
 
   <content src="index.html" />
 
-  <preference name="android-targetSdkVersion" value="30" />
-  <preference name="AndroidPersistentFileLocation" value="Compatibility" />
-  <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
-  <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,assets,root" />
-  <preference name="AndroidXEnabled" value="true"></preference>
-
   <access origin="cdvfile://*" />
   <allow-intent href="http://*/*" />
   <allow-intent href="https://*/*" />
@@ -35,14 +29,20 @@
 
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
+
+    <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
   </platform>
 
   <platform name="android">
-    <allow-intent href="market:*" />
-
     <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
       <application android:requestLegacyExternalStorage="true" />
     </edit-config>
-  </platform>
 
+    <allow-intent href="market:*" />
+
+    <preference name="android-targetSdkVersion" value="30" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,assets,root" />
+    <preference name="AndroidXEnabled" value="true"></preference>
+  </platform>
 </widget>

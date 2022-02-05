@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
-import { HttpClient } from '@angular/common/http';
-import { File } from '@awesome-cordova-plugins/file/ngx';
 import { Platform } from '@ionic/angular';
-import { Observable, of, map, firstValueFrom } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +9,7 @@ import { Observable, of, map, firstValueFrom } from 'rxjs';
 export class PhotoService {
   private _photos: CapturedPhoto[] = [];
 
-  get photos(): Observable<CapturedPhoto[]> {
-    return of(this._photos);
-  }
+  get photos(): Observable<CapturedPhoto[]> { return of(this._photos); }
 
   private _cameraOptions: CameraOptions = {
     quality: 50,
@@ -28,13 +24,11 @@ export class PhotoService {
     this.cameraSvc.getPicture(this._cameraOptions)
       .then((url: string) => this.onCameraSuccess(url))
       .catch(() => this.onCameraError());
-
   }
 
-  async savePhoto() {  }
+  async savePhoto() {}
 
   async onCameraSuccess(capPhotoUrl: string) {
-    const platformKeywords = new Set(this.platformSvc.platforms());
     const capturedPhoto: CapturedPhoto = {
       id: this._photos.length,
       photoUrl: `data:image/png;base64,${capPhotoUrl}`
@@ -43,11 +37,11 @@ export class PhotoService {
     this._photos.unshift(capturedPhoto);
   }
 
-  onCameraError() {}
+  onCameraError() {
+
+  }
 
   constructor(
-    private fileSvc: File,
-    private httpClientSvc: HttpClient,
     private cameraSvc: Camera,
     private platformSvc: Platform) {}
 }

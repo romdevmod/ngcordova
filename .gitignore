@@ -19,6 +19,7 @@
 .angular
 .DS_Store
 .env
+.env.production
 nodemon.json
 *.log
 
