@@ -3,14 +3,14 @@ jobs:
   build:
     working_directory: ~/ngcordova
     docker:
-      - circleci/node:10-browsers
+      - image: circleci/node:10-browsers
     steps:
       - checkout
       - restore_cache:
-        key: ngcordova-{{ .Branch }}-{{ checksum 'package-lock.json' }}
+          key: ngcordova-{{ .Branch }}-{{ checksum 'package-lock.json' }}
       - run: npm i
       - save_cache:
-        key: ngcordova-{{ .Branch }}-{{ checksum 'package-lock.json' }}
-        paths:
-          - 'node_modules'
+          key: ngcordova-{{ .Branch }}-{{ checksum 'package-lock.json' }}
+          paths:
+            - 'node_modules'
       - run: npm test
