@@ -10,6 +10,9 @@ export NODE_ENV=$([[ $NODE_ENV ]] && echo $NODE_ENV || echo 'development');
 export CORDOVA_PLATFORM=$([ $CORDOVA_PLATFORM ] && echo $CORDOVA_PLATFORM || echo 'browser');
 export NGBUILD_PID=$([ $NGBUILD_PID ] && echo $NGBUILD_PID || echo "/tmp/ngbuild-${CORDOVA_PLATFORM}_pid");
 
+# Create an updated config.xml for the app.
+node config.js;
+
 # Update the environment of the app.
 ([ "$ENV_CONTEXT" == 'dev' ] && npm run initial:dev || npm run initial:prod) &> /dev/null;
 
