@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <widget
-  id="digital.mitsi.ngcordova"
+  id="{{ CORDOVA_APP_ID }}"
   version="1.0.0"
   xmlns="http://www.w3.org/ns/widgets"
   xmlns:cdv="http://cordova.apache.org/ns/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools">
 
-  <name>ng-cordova</name>
-  <author email="rom@mitsi.digital">Rom Rom</author>
+  <name>{{ CORDOVA_APP_NAME }}</name>
+  <author email="{{ CORDOVA_AUTHOR_EMAIL }}">{{ CORDOVA_AUTHOR_NAME }}</author>
 
   <content src="index.html" />
 
@@ -30,6 +30,7 @@
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
 
+    <!-- <preference name="GOOGLE_MAPS_IOS_API_KEY" value="{{ GOOGLE_MAPS_IOS_API_KEY }}" /> -->
     <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
   </platform>
 
@@ -40,6 +41,7 @@
 
     <allow-intent href="market:*" />
 
+    <!-- <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="{{ GOOGLE_MAPS_ANDROID_API_KEY }}" /> -->
     <preference name="android-targetSdkVersion" value="30" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,assets,root" />
