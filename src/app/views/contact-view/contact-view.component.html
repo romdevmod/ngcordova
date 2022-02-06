@@ -1,6 +1,9 @@
 <ion-content>
   <ion-grid>
     <ion-row>
+      <ion-col size="12">
+        <ion-button (click)="onClickedShakeMe()" expand="full" size="large" color="medium">give it a shake</ion-button>
+      </ion-col>
       <ion-col size="6" *ngFor="let contact of contactLists; index as i; trackBy:trackContacts">
         <ion-card>
           <ion-img [src]="contact.avatar"></ion-img>

@@ -32,7 +32,6 @@ describe('PhotoService', () => {
 
   it('#addNewToGallery should capture a picture and save it into _photos.', async () => {
     await service.addNewToGallery();
-
     expect((await firstValueFrom(service.photos)).length).toBe(0);
   });
 

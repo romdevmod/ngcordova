@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 
 import { CoreServicesModule } from '@Core/services/services.module';
 import { CoreComponentsModule } from '@Core/components/components.module';
+import { SampleDirective } from './utils/directives/sample.directive';
 
 @NgModule({
   imports: [
@@ -29,6 +30,9 @@ import { CoreComponentsModule } from '@Core/components/components.module';
     CoreComponentsModule,
     CoreServicesModule
   ],
-  schemas: []
+  schemas: [],
+  declarations: [
+    SampleDirective
+  ]
 })
 export class CoreModule {}
