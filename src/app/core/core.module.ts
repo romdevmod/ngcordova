@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 
 import { CoreServicesModule } from '@Core/services/services.module';
 import { CoreComponentsModule } from '@Core/components/components.module';
-import { SampleDirective } from './utils/directives/sample.directive';
 
 @NgModule({
   imports: [
@@ -15,7 +14,6 @@ import { SampleDirective } from './utils/directives/sample.directive';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule
-
   ],
 
   providers: [ CoreServicesModule ],
@@ -32,7 +30,7 @@ import { SampleDirective } from './utils/directives/sample.directive';
   ],
   schemas: [],
   declarations: [
-    SampleDirective
+
   ]
 })
 export class CoreModule {}

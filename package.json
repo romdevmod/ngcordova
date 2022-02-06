@@ -17,7 +17,7 @@
     "ios:watch": "export CORDOVA_PLATFORM=ios; ./build-script.sh && NODEMON_ENV=run ./build-script.sh",
     "ios:build-dev": "NOWATCH=true ./build-script.sh && CORDOVA_PLATFORM=ios NODEMON_ENV=build ./build-script.sh",
     "ios:build": "NOWATCH=true ./build-script.sh && CORDOVA_PLATFORM=ios NODEMON_ENV=build NODE_ENV=production ./build-script.sh",
-    "test": "npm run initial:dev && ng test"
+    "test": "npm run initial:dev && ng test --no-watch --no-progress --browsers=ChromeHeadlessCI"
   },
   "keywords": [
     "ecosystem:cordova"

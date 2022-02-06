@@ -1,16 +1,16 @@
-version: 2
+version: 2.1
 jobs:
   build:
-    working_directory:
+    working_directory: ~/ngcordova
     docker:
       - circleci/node:10-browsers
     steps:
       - checkout
       - restore_cache:
-        key:
+        key: ngcordova-{{ .Branch }}-{{ checksum 'package-lock.json' }}
       - run: npm i
       - save_cache:
-        key:
+        key: ngcordova-{{ .Branch }}-{{ checksum 'package-lock.json' }}
         paths:
           - 'node_modules'
-      - run: npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCLI
+      - run: npm test
