@@ -10,9 +10,6 @@ export NODE_ENV=$([[ $NODE_ENV ]] && echo $NODE_ENV || echo 'development');
 export CORDOVA_PLATFORM=$([ $CORDOVA_PLATFORM ] && echo $CORDOVA_PLATFORM || echo 'browser');
 export NGBUILD_PID=$([ $NGBUILD_PID ] && echo $NGBUILD_PID || echo "/tmp/ngbuild-${CORDOVA_PLATFORM}_pid");
 
-# Create an updated config.xml for the app.
-node config.js;
-
 # Update the environment of the app.
 ([ "$ENV_CONTEXT" == 'dev' ] && npm run initial:dev || npm run initial:prod) &> /dev/null;
 
@@ -59,11 +56,19 @@ CHECK_IF_NODEMON_CLI_EXISTS_AND_CREATE_NODEMON_CONFIG() {
   echo $NODEMON_CONFIG > ./nodemon.json;
 }
 
+RERUN_IF_PLATFORM_NOT_INSTALLED() {
+  $CORDOVA_EXEC $([ $NODEMON_ENV == 'build' ] && echo 'build' || echo 'run') $CORDOVA_PLATFORM;
+  [ $? -ne 0 ] && $CORDOVA_EXEC platform add $CORDOVA_PLATFORM;
+}
+
 
 # This subroutine starts the build and watch process of the Angular application.
 #
 build_angular_proj() {
   CHECK_IF_ANGULAR_CLI_EXISTS_ELSE_INSTALL_IT;
+
+  # Create an updated config.xml for the app.
+  node config.js;
 
   # Generate the environment variables from the .env file.
   node ./builder.js;
@@ -96,10 +101,12 @@ build_platform() {
   # 1) Test the app
   npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI;
 
-  # 2) Build the app
-  [[ $? -eq 0 ]] && $CORDOVA_EXEC build $CORDOVA_PLATFORM $([ $NODE_ENV == 'production' ] && echo '--release' || echo '--debug');
-}
+  export NG_TEST_RESULT=$?;
 
+  # 2) Build the app
+  [[ $NG_TEST_RESULT -eq 0 ]] && $CORDOVA_EXEC build $CORDOVA_PLATFORM $([ $NODE_ENV == 'production' ] && echo '--release' || echo '--debug');
+  [[ $NG_TEST_RESULT -eq 0 ]] && RERUN_IF_PLATFORM_NOT_INSTALLED;
+}
 
 main() {
   if [ $NODEMON_ENV == 'run' ]; then
@@ -111,6 +118,7 @@ main() {
   elif [ $NODEMON_ENV == 'nodemon' ]; then
     # Run cordova then wait for a change or press any key to terminate the nodemon.
     $CORDOVA_EXEC run $CORDOVA_PLATFORM;
+    RERUN_IF_PLATFORM_NOT_INSTALLED;
   fi
 }
 

@@ -6,8 +6,8 @@
     "clean:browser": "(kill $(cat /tmp/ngbuild-browser_pid) && rm /tmp/ngbuild-browser_pid) &> /dev/null",
     "clean:android": "(kill $(cat /tmp/ngbuild-android_pid) && rm /tmp/ngbuild-android_pid) &> /dev/null",
     "clean:ios": "(kill $(cat /tmp/ngbuild-ios_pid) && rm /tmp/ngbuild-ios_pid) &> /dev/null",
-    "initial:dev": "ENV_CONTEXT=dev node builder.js && npm run browser:build-dev &> /dev/null",
-    "initial:prod": "ENV_CONTEXT=prod node builder.js && npm run browser:build &> /dev/null",
+    "initial:dev": "ENV_CONTEXT=dev node builder.js",
+    "initial:prod": "ENV_CONTEXT=prod node builder.js",
     "android:watch": "export CORDOVA_PLATFORM=android; ./build-script.sh && NODEMON_ENV=run ./build-script.sh",
     "android:build-dev": "NOWATCH=true ./build-script.sh && CORDOVA_PLATFORM=android NODEMON_ENV=build ./build-script.sh",
     "android:build": "NOWATCH=true ./build-script.sh && CORDOVA_PLATFORM=android NODEMON_ENV=build NODE_ENV=production ./build-script.sh",
@@ -39,7 +39,6 @@
     "@awesome-cordova-plugins/file": "^5.39.0",
     "@awesome-cordova-plugins/file-path": "^5.39.0",
     "@awesome-cordova-plugins/geolocation": "^5.39.0",
-    "@awesome-cordova-plugins/push": "^5.39.0",
     "@awesome-cordova-plugins/status-bar": "^5.39.0",
     "@awesome-cordova-plugins/theme-detection": "^5.39.0",
     "@awesome-cordova-plugins/vibration": "^5.39.0",
@@ -76,15 +75,19 @@
     "karma-coverage": "^2.1.0",
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-html-reporter": "^1.7.0",
+    "mx.ferreyra.callnumber": "^0.0.2",
     "nodemon": "^2.0.15",
     "typescript": "^4.5.5"
   },
   "cordova": {
     "platforms": [
-      "browser"
+      "browser",
+      "android"
     ],
     "plugins": {
-      "cordova-plugin-camera": {},
+      "cordova-plugin-camera": {
+        "ANDROIDX_CORE_VERSION": "1.6.+"
+      },
       "cordova-plugin-file": {},
       "cordova-plugin-filepath": {},
       "cordova-plugin-androidx-adapter": {},
@@ -93,7 +96,8 @@
       "cordova-plugin-theme-detection": {},
       "cordova-plugin-background-mode": {},
       "cordova-plugin-statusbar": {},
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "call-number": {}
     }
   }
 }
