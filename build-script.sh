@@ -56,11 +56,17 @@ CHECK_IF_NODEMON_CLI_EXISTS_AND_CREATE_NODEMON_CONFIG() {
   echo $NODEMON_CONFIG > ./nodemon.json;
 }
 
-RERUN_IF_PLATFORM_NOT_INSTALLED() {
-  $CORDOVA_EXEC $([ $NODEMON_ENV == 'build' ] && echo 'build' || echo 'run') $CORDOVA_PLATFORM;
-  [ $? -ne 0 ] && $CORDOVA_EXEC platform add $CORDOVA_PLATFORM;
+CREATE_GITKEEP_FILE_IN_WWW() {
+  # Create a .gitkeep file for the output folder.
+  mkdir www &> /dev/null;
+  touch www/.gitkeep &> /dev/null;
 }
 
+RERUN_IF_PLATFORM_NOT_INSTALLED() {
+  [ $? -ne 0 ] && $CORDOVA_EXEC platform add $CORDOVA_PLATFORM;
+  $CORDOVA_EXEC $([ $NODEMON_ENV == 'build' ] && echo 'build' || echo 'run') $CORDOVA_PLATFORM;
+  CREATE_GITKEEP_FILE_IN_WWW;
+}
 
 # This subroutine starts the build and watch process of the Angular application.
 #
@@ -78,7 +84,7 @@ build_angular_proj() {
     # Clean up previous build watch commmand.
     [ -f $NGBUILD_PID ] && eval "npm run clean:$CORDOVA_PLATFORM &> /dev/null;";
 
-    $NG_EXEC build --watch --progress --configuration=$NODE_ENV --output-path=./www &
+    $NG_EXEC build --watch --progress --configuration=$NODE_ENV --output-path=./www/ &
 
     # write the pid of the `ng build ...` command into a pid file to /tmp.
     echo $! > $NGBUILD_PID;
@@ -112,7 +118,8 @@ main() {
   if [ $NODEMON_ENV == 'run' ]; then
     nodemon_cordova_watch;
   elif [ $NODEMON_ENV == 'watch' ]; then
-    build_angular_proj; sleep 10;
+    build_angular_proj;
+    sleep 10;
   elif [ $NODEMON_ENV == 'build' ]; then
     build_platform;
   elif [ $NODEMON_ENV == 'nodemon' ]; then
